@@ -185,13 +185,9 @@ const DanceArena: FC<DanceArenaProps> = ({ onGoHome, config }) => {
                     setSpacing={setAvatarSpacing}
                 />
 
-                <div className="flex-grow flex flex-col bg-zinc-800/50 p-4 rounded-lg">
-                    <h2 className="text-lg font-semibold text-white mb-2">Dance Video</h2>
-                    <div
-                        className={`w-full bg-black rounded-md overflow-hidden relative ${
-                            isVerticalVideo ? 'aspect-[9/16]' : 'aspect-video'
-                        }`}
-                    >
+                <div className="flex-grow flex flex-col min-h-0 bg-zinc-800/50 p-4 rounded-lg">
+                    <h2 className="text-lg font-semibold text-white mb-2 flex-shrink-0">Dance Video</h2>
+                    <div className="flex-1 min-h-0 w-full relative rounded-md overflow-hidden bg-black">
                         {videoSrc ? (
                             <video
                                 ref={videoRef}
