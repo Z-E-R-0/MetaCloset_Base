@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MetaCloset – Futuristic Wardrobe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700;900&display=swap" rel="stylesheet">
+    
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
+    "react/": "https://esm.sh/react@^19.1.1/",
+    "three/": "https://esm.sh/three@^0.179.1/",
+    "three": "https://esm.sh/three@^0.179.1",
+    "@mediapipe/tasks-vision": "https://esm.sh/@mediapipe/tasks-vision@0.10.2",
+    "three/addons/animation/CCDIKSolver.js": "https://esm.sh/three@0.179.1/examples/jsm/animation/CCDIKSolver.js",
+    "three/addons/controls/OrbitControls.js": "https://esm.sh/three@0.179.1/examples/jsm/controls/OrbitControls.js",
+    "three/addons/controls/TransformControls.js": "https://esm.sh/three@0.179.1/examples/jsm/controls/TransformControls.js",
+    "three/addons/geometries/ParametricGeometry.js": "https://esm.sh/three@0.179.1/examples/jsm/geometries/ParametricGeometry.js",
+    "three/addons/loaders/RGBELoader.js": "https://esm.sh/three@0.179.1/examples/jsm/loaders/RGBELoader.js",
+    "three/addons/postprocessing/EffectComposer.js": "https://esm.sh/three@0.179.1/examples/jsm/postprocessing/EffectComposer.js",
+    "three/addons/postprocessing/RenderPass.js": "https://esm.sh/three@0.179.1/examples/jsm/postprocessing/RenderPass.js",
+    "three/addons/postprocessing/ShaderPass.js": "https://esm.sh/three@0.179.1/examples/jsm/postprocessing/ShaderPass.js",
+    "three/addons/postprocessing/UnrealBloomPass.js": "https://esm.sh/three@0.179.1/examples/jsm/postprocessing/UnrealBloomPass.js",
+    "three/addons/postprocessing/OutputPass.js": "https://esm.sh/three@0.179.1/examples/jsm/postprocessing/OutputPass.js",
+    "three/addons/shaders/FXAAShader.js": "https://esm.sh/three@0.179.1/examples/jsm/shaders/FXAAShader.js",
+    "firebase/app": "https://esm.sh/firebase@10.12.4/app",
+    "firebase/storage": "https://esm.sh/firebase@10.12.4/storage",
+    "firebase/database": "https://esm.sh/firebase@10.12.4/database",
+    "firebase/auth": "https://esm.sh/firebase@10.12.4/auth",
+    "firebase/": "https://esm.sh/firebase@^12.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai"
+  }
+}
+</script>
+<style>
+  :root {
+    --color-bg: #010101;
+    --color-primary: #A3E635; /* lime-400 */
+    --color-primary-glow: rgba(163, 230, 53, 0.7);
+    --color-text-light: #F0F0F0;
+    --color-text-dark: #A0A0A0;
+    --color-glass: rgba(20, 20, 20, 0.5);
+    --color-border: rgba(163, 230, 53, 0.2);
+    --font-main: 'Exo 2', sans-serif;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text-light);
+    font-family: var(--font-main);
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes glow {
+    0%, 100% {
+      text-shadow: 0 0 5px var(--color-primary), 0 0 10px var(--color-primary);
+      box-shadow: 0 0 10px var(--color-primary-glow);
+    }
+    50% {
+      text-shadow: 0 0 10px var(--color-primary), 0 0 20px var(--color-primary);
+      box-shadow: 0 0 25px var(--color-primary-glow);
+    }
+  }
+  @keyframes flash {
+    0% { opacity: 0.8; }
+    100% { opacity: 0; }
+  }
+
+  .animate-page-fade-in {
+    animation: fadeIn 0.7s ease-out forwards;
+  }
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+  .animate-fade-in-down {
+    animation: fadeInDown 0.5s ease-out forwards;
+  }
+  .animate-flash {
+    animation: flash 0.3s ease-out forwards;
+  }
+
+  /* Glassmorphism */
+  .glassmorphic {
+    background: var(--color-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  .glassmorphic:hover {
+    background: rgba(30, 30, 30, 0.6);
+    border-color: rgba(163, 230, 53, 0.4);
+  }
+
+  /* Buttons */
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px var(--color-primary-glow);
+  }
+  
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+  }
+  .btn-secondary:hover {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+  }
+
+  /* Carousel Styles */
+  .carousel-wrapper {
+    width: 100%;
+    height: 450px;
+    perspective: 1500px;
+    position: relative;
+    animation: fadeInUp 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+  .carousel-container {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    height: 100%;
+    width: 100%;
+    padding: 0 calc(50% - 160px); 
+    scrollbar-width: none; /* Firefox */
+  }
+  .carousel-container::-webkit-scrollbar {
+      display: none; /* Safari and Chrome */
+  }
+  .carousel-item {
+    flex: 0 0 300px;
+    height: 400px;
+    margin: 0 10px; 
+    scroll-snap-align: center;
+    border-radius: 1rem;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out, border-color 0.4s ease-out, box-shadow 0.4s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    transform-style: preserve-3d;
+    background: rgba(10, 10, 10, 0.8);
+    border: 1px solid var(--color-border);
+  }
+  .carousel-item:hover {
+    box-shadow: 0 0 35px var(--color-primary-glow);
+    border-color: var(--color-primary);
+    transform: scale(1.05) !important;
+    z-index: 101 !important;
+  }
+  .carousel-item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    transition: transform 0.4s ease;
+  }
+  .carousel-item:hover img {
+    transform: scale(1.1);
+  }
+  .carousel-item h3 {
+      position: relative;
+      z-index: 1;
+      background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+      color: var(--color-text-light);
+      width: 100%;
+      padding: 3rem 1rem 1rem 1rem;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.125rem;
+      margin: 0;
+      pointer-events: none;
+  }
+
+  /* Custom scrollbar for panels */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #BEF264; /* lime-300 */
+  }
+
+</style>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

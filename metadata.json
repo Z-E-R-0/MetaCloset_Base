@@ -1,0 +1,8 @@
+{
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "name": "MetaCloset",
+  "description": "Your futuristic wardrobe.",
+  "prompt": ""
+}
