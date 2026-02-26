@@ -2,6 +2,8 @@
 
 A digital wardrobe and Dance Arena app: try on garments in AR or with static images, and drive a crew of 3D avatars from a single dance video using pose tracking.
 
+![App screenshot](app-shot.png)
+
 ## Features
 
 - **Home & catalog** – Browse garments and choose AR try-on or upload a photo.
